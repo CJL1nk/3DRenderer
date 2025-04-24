@@ -4,26 +4,20 @@
 
 #include "Object.h"
 
+Object::Object(std::vector<Point>& points, Vector3 pos, sf::RenderWindow& window) {
 
-Object::Object(sf::VertexArray points, sf::Vector2f pos, sf::RenderWindow& window) {
-
-    this->_pos = Position(pos.x, pos.y);
-    this->_points = points;
+    this->_pos = Position(pos.x, pos.y, pos.z);
+    this->_points = std::move(points);
     this->_window = &window;
 }
 
 void Object::draw() {
 
-    sf::VertexArray points = _points;
-
-    for (int i = 0; i < points.getVertexCount(); i++) {
-        points[i].position.x += _pos.x;
-        points[i].position.y += _pos.y;
+    for (Point point : this->_points) {
+        std::cout << point.label() << " Connections:" << std::endl;
     }
-
-
-    _window->draw(points);
 }
+
 
 void Object::move(sf::Vector2f pos) {
     _pos.x = pos.x;

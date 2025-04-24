@@ -17,6 +17,8 @@ add_executable(3DRenderer src/main.cpp
         src/Object.cpp
         src/Object.h
         src/includes.h
+        src/Point.cpp
+        src/Point.h
 )
 
 target_link_libraries(3DRenderer PRIVATE SFML::Graphics SFML::Window)

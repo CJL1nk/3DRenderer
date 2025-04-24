@@ -1,63 +1,30 @@
 #include "includes.h"
+#include "Point.h"
+#include "types.h"
 #include "Object.h"
+
+std::vector<Point> points = {
+    Point("1", Vector3(-0.5f, -0.5f, -0.5f), std::vector<std::string>{"2", "4", "5"}),
+    Point("2", Vector3( 0.5f, -0.5f, -0.5f), std::vector<std::string>{"3", "6"}),
+    Point("3", Vector3( 0.5f,  0.5f, -0.5f), std::vector<std::string>{"4", "7"}),
+    Point("4", Vector3(-0.5f,  0.5f, -0.5f), std::vector<std::string>{"1", "8"}),
+    Point("5", Vector3(-0.5f, -0.5f,  0.5f), std::vector<std::string>{"6", "8"}),
+    Point("6", Vector3( 0.5f, -0.5f,  0.5f), std::vector<std::string>{"7"}),
+    Point("7", Vector3( 0.5f,  0.5f,  0.5f), std::vector<std::string>{"8"}),
+    Point("8", Vector3(-0.5f,  0.5f,  0.5f)),
+};
 
 int main()
 {
     // Create window
-    sf::Vector2u windowSize = sf::Vector2u(480, 480);
+    sf::Vector2u windowSize = sf::Vector2u(800, 600);
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
     window.setFramerateLimit(30);
 
-    // Random Number stuff
-    std::mt19937 generator(2);
-    std::uniform_int_distribution<int> distribution(3, 20);
-
-    // Stuff for bouncing around window
-    int xmod = 1;
-    int ymod = 1;
-
-    int velX = 10;
-    int velY = 10;
-
-    // Object construction
-    sf::Vector2f centerPos = sf::Vector2f(240, 0);
-
-    // Point construction is relative to the objects "center" position
-    sf::VertexArray shape(sf::PrimitiveType::LineStrip, 11);
-
-    shape[0].position = sf::Vector2f(0.f, -50.f);
-    shape[1].position = sf::Vector2f(15.f, -15.f);
-    shape[2].position = sf::Vector2f(50.f, -15.f);
-    shape[3].position = sf::Vector2f(25.f, 10.f);
-    shape[4].position = sf::Vector2f(35.f, 50.f);
-    shape[5].position = sf::Vector2f(0.f, 25.f);
-    shape[6].position = sf::Vector2f(-35.f, 50.f);
-    shape[7].position = sf::Vector2f(-25.f, 10.f);
-    shape[8].position = sf::Vector2f(-50.f, -15.f);
-    shape[9].position = sf::Vector2f(-15.f, -15.f);
-    shape[10].position = shape[0].position;
-
-    Object obj1(shape, centerPos, window);
+    Object cube = Object(points, Vector3(0, 0, 0), window);
 
     while (window.isOpen())
     {
-        // Update positions
-        centerPos.x += velX * xmod;
-        centerPos.y += velY * ymod;
-
-        if (centerPos.x > windowSize.x || centerPos.x < 0) {
-            centerPos.x = centerPos.x > windowSize.x ? windowSize.x : 0; // Snap to edge if it goes beyond
-            xmod *= -1; // Reverses x direction
-            velX = distribution(generator);
-        }
-        if (centerPos.y > windowSize.y || centerPos.y < 0) {
-            centerPos.y = centerPos.y > windowSize.y ? windowSize.y : 0; // Snap to edge if it goes beyond
-            ymod *= -1; // Reverses y direction
-            velY = distribution(generator);
-        }
-
-        obj1.move(centerPos); // Move the actual object itself
-
         // Event processing
         while (const std::optional event = window.pollEvent())
         {
@@ -71,7 +38,7 @@ int main()
         window.setActive();
         window.clear(sf::Color::Black);
 
-        obj1.draw();
+        cube.draw();
 
         window.display();
     }
