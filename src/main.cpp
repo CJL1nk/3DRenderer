@@ -23,14 +23,20 @@ int main()
     sf::Vector2f centerPos = sf::Vector2f(240, 0);
 
     // Point construction is relative to the objects "center" position
-    sf::VertexArray shape(sf::PrimitiveType::LineStrip, 7);
-    shape[0].position = sf::Vector2f(-50.0f, -50.0f);
-    shape[1].position = sf::Vector2f(-50.0f, 50.0f);
-    shape[2].position = sf::Vector2f(70.0f, 50.0f);
-    shape[3].position = sf::Vector2f(50.0f, -50.0f);
-    shape[4].position = sf::Vector2f(-50.0f, -40.0f);
-    shape[5].position = sf::Vector2f(60.0f, -40.0f);
-    shape[5].position = sf::Vector2f(70.0f, -20.0f);
+    sf::VertexArray shape(sf::PrimitiveType::LineStrip, 11);
+
+    shape[0].position = sf::Vector2f(0.f, -50.f);
+    shape[1].position = sf::Vector2f(15.f, -15.f);
+    shape[2].position = sf::Vector2f(50.f, -15.f);
+    shape[3].position = sf::Vector2f(25.f, 10.f);
+    shape[4].position = sf::Vector2f(35.f, 50.f);
+    shape[5].position = sf::Vector2f(0.f, 25.f);
+    shape[6].position = sf::Vector2f(-35.f, 50.f);
+    shape[7].position = sf::Vector2f(-25.f, 10.f);
+    shape[8].position = sf::Vector2f(-50.f, -15.f);
+    shape[9].position = sf::Vector2f(-15.f, -15.f);
+    shape[10].position = shape[0].position;
+
 
     Object obj1(shape, centerPos, window);
 
