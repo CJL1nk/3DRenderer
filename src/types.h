@@ -6,15 +6,15 @@
 #define TYPES_H
 
 struct Rotation {
-    double pitch;
-    double roll;
-    double yaw;
+    float pitch;
+    float roll;
+    float yaw;
 };
 
 struct Position {
-    double x;
-    double y;
-    double z;
+    float x;
+    float y;
+    float z;
 
     Rotation rotation;
 };

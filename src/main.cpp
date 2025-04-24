@@ -4,24 +4,33 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode({480, 480}), "Window");
-    window.setFramerateLimit(5);
+    window.setFramerateLimit(30);
 
-    sf::Vector2f pos = sf::Vector2f(5, 5);
+    sf::Vector2f centerPos = sf::Vector2f(0, 0);
+    int xmod = 1;
+    int ymod = 1;
 
-    sf::VertexArray square(sf::PrimitiveType::LineStrip, 5);
-    square[0].position = sf::Vector2f(190.0f, 190.0f); // Top-left corner
-    square[1].position = sf::Vector2f(290.0f, 190.0f); // Top-right corner
-    square[2].position = sf::Vector2f(290.0f, 290.0f); // Bottom-right corner
-    square[3].position = sf::Vector2f(190.0f, 260.0f); // Bottom-left corner
-    square[4].position = sf::Vector2f(190.0f, 190.0f); // Close the square (back to top-left corner)
+    // Point construction is relative to the objects "center" position
+    sf::VertexArray shape(sf::PrimitiveType::LineStrip, 7);
+    shape[0].position = sf::Vector2f(-50.0f, -50.0f);
+    shape[1].position = sf::Vector2f(-50.0f, 50.0f);
+    shape[2].position = sf::Vector2f(70.0f, 50.0f);
+    shape[3].position = sf::Vector2f(50.0f, -50.0f);
+    shape[4].position = sf::Vector2f(-50.0f, -40.0f);
+    shape[5].position = sf::Vector2f(60.0f, -40.0f);
+    shape[5].position = sf::Vector2f(70.0f, -20.0f);
 
-    Object obj1(square, pos, window);
+    Object obj1(shape, centerPos, window);
 
     while (window.isOpen())
     {
-        pos.x -= 5;
-        pos.y += 2;
-        obj1.move(pos);
+        centerPos.x += 10 * xmod;
+        centerPos.y += 10 * ymod;
+
+        if (centerPos.x > 480 || centerPos.x < 0) xmod *= -1;
+        if (centerPos.y > 480 || centerPos.y < 0) ymod *= -1;
+
+        obj1.move(centerPos);
 
         // Event processing
         while (const std::optional event = window.pollEvent())
