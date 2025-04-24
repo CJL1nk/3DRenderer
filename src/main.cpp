@@ -37,7 +37,6 @@ int main()
     shape[9].position = sf::Vector2f(-15.f, -15.f);
     shape[10].position = shape[0].position;
 
-
     Object obj1(shape, centerPos, window);
 
     while (window.isOpen())
