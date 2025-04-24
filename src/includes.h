@@ -9,5 +9,7 @@
 #include <SFML/Window.hpp>
 
 #include "types.h"
+#include <random>
+#include <iostream>
 
 #endif //INCLUDES_H
