@@ -3,19 +3,24 @@
 
 int main()
 {
+    // Create window
     sf::Vector2u windowSize = sf::Vector2u(480, 480);
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
     window.setFramerateLimit(30);
 
+    // Random Number stuff
     std::mt19937 generator(2);
     std::uniform_int_distribution<int> distribution(3, 20);
 
-    sf::Vector2f centerPos = sf::Vector2f(240, 0);
+    // Stuff for bouncing around window
     int xmod = 1;
     int ymod = 1;
 
-    int angleX = 10;
-    int angleY = 10;
+    int velX = 10;
+    int velY = 10;
+
+    // Object construction
+    sf::Vector2f centerPos = sf::Vector2f(240, 0);
 
     // Point construction is relative to the objects "center" position
     sf::VertexArray shape(sf::PrimitiveType::LineStrip, 7);
@@ -31,19 +36,22 @@ int main()
 
     while (window.isOpen())
     {
-        centerPos.x += angleX * xmod;
-        centerPos.y += angleY * ymod;
+        // Update positions
+        centerPos.x += velX * xmod;
+        centerPos.y += velY * ymod;
 
         if (centerPos.x > windowSize.x || centerPos.x < 0) {
-            xmod *= -1;
-            angleX = distribution(generator);
+            centerPos.x = centerPos.x > windowSize.x ? windowSize.x : 0; // Snap to edge if it goes beyond
+            xmod *= -1; // Reverses x direction
+            velX = distribution(generator);
         }
         if (centerPos.y > windowSize.y || centerPos.y < 0) {
-            ymod *= -1;
-            angleY = distribution(generator);
+            centerPos.y = centerPos.y > windowSize.y ? windowSize.y : 0; // Snap to edge if it goes beyond
+            ymod *= -1; // Reverses y direction
+            velY = distribution(generator);
         }
 
-        obj1.move(centerPos);
+        obj1.move(centerPos); // Move the actual object itself
 
         // Event processing
         while (const std::optional event = window.pollEvent())
