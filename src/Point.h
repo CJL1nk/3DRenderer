@@ -16,7 +16,7 @@
 class Point {
 public:
 
-    Point() : _label(""), _pos(Vector3()) {}
+    Point() : _label("DEFAULT CONSTRUCTED"), _pos(Vector3(0, 0, 0)) {}
 
     explicit Point(const std::string &label, const Vector3 pos)
     : _label(label), _pos(pos) {

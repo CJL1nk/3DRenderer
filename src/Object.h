@@ -15,7 +15,7 @@ public:
     Object(std::vector<Point> points, Vector3 pos, sf::RenderWindow& window);
 
     void draw();
-    void move(sf::Vector2f pos);
+    void move(Vector3 pos);
 
     Object& operator=(const Object& other);
 

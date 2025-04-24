@@ -7,7 +7,7 @@
 Object::Object(std::vector<Point> points, Vector3 pos, sf::RenderWindow& window) {
 
     this->_pos = Position(pos.x, pos.y, pos.z);
-    this->_points = std::move(points);
+    this->_points = points;
     this->_window = &window;
 }
 
@@ -22,9 +22,10 @@ void Object::draw() {
 }
 
 
-void Object::move(sf::Vector2f pos) {
+void Object::move(Vector3 pos) {
     _pos.x = pos.x;
     _pos.y = pos.y;
+    _pos.z = pos.z;
 }
 
 Object& Object::operator=(const Object& other) {
