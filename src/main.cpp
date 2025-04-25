@@ -21,6 +21,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
     window.setFramerateLimit(30);
 
+    // Create object with above defined points
     Object cube = Object(points, Vector3(0, 0, 0), window);
 
     while (window.isOpen())
@@ -34,7 +35,6 @@ int main() {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) window.close();
         }
 
-        // Activate the window for OpenGL rendering
         window.setActive();
         window.clear(sf::Color::Black);
 
