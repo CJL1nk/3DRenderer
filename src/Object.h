@@ -22,6 +22,7 @@ public:
 
     void draw(const Camera& camera);
     void move(const Position pos);
+    void setColor(const sf::Color& color = sf::Color::White);
 
     Object& operator=(const Object& other);
 
@@ -30,6 +31,7 @@ private:
     Position* _pos{};
     std::vector<Point> _points;
     sf::RenderWindow* _window;
+    sf::Color _color;
 };
 
 

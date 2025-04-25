@@ -16,10 +16,23 @@ std::vector<Point> points = {
 
 int main() {
 
+    // Movement speed
+    float movementSpeed = 0.8f;
+    float rotationSpeed = 0.12f;
+    int movXMod = 1;
+    int movZMod = 1;
+
+    std::mt19937 gen(6);
+    std::uniform_real_distribution<> distrib(0.8, 10.);
+
+    float pathX = distrib(gen);
+    float pathZ = distrib(gen);
+
+
     // Create window
     sf::Vector2u windowSize = sf::Vector2u(1280, 720);
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(60);
 
     std::vector<Point> planePoints;
     for (int x = -100; x <= 100; x += 10) {
@@ -38,13 +51,16 @@ int main() {
 
     Position planePos = Position(0, 0, 0, Rotation(0, 0, 0));
     Object plane = Object(planePoints, &planePos, window);
+    plane.setColor(sf::Color::Green);
 
     Position pos = Position(0, 0, 0, Rotation(0, 0, 0));
     Position pos2 = Position(5, -5, 5, Rotation(0, 0, 0));
 
     // Create object with above defined points
     Object cube1 = Object(points, &pos, window);
+    cube1.setColor(sf::Color::Red);
     Object cube2 = Object(points, &pos2, window);
+    cube2.setColor(sf::Color::Blue);
 
     Camera camera(Position(0, 0, 5));
 
@@ -54,10 +70,32 @@ int main() {
         pos.rotation.yaw += 4.;
         pos.rotation.pitch += 2.;
 
-        pos.x += 0.1;
+        pos.x += pathX * movXMod;
+        pos.z += pathZ * movZMod;
 
         pos2.rotation.yaw += -0.3;
         pos2.rotation.pitch += 0.7;
+
+        if (pos.x > 100) {
+            movXMod *= -1;
+            pos.x = 100;
+            pathX = distrib(gen);
+        } else if (pos.x < -100) {
+            movXMod *= -1;
+            pos.x = -100;
+            pathX = distrib(gen);
+        }
+
+        if (pos.z > 100) {
+            movZMod *= -1;
+            pos.z = 100;
+            pathZ = distrib(gen);
+        } else if (pos.z < -100) {
+            movZMod *= -1;
+            pos.z = -100;
+            pathZ = distrib(gen);
+        }
+
 
         // Event processing
         while (const std::optional event = window.pollEvent())
@@ -67,10 +105,6 @@ int main() {
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) window.close();
         }
-
-        // Movement speed
-        float movementSpeed = 0.2f;
-        float rotationSpeed = 0.06f;
 
         // Keyboard controls
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
@@ -108,6 +142,18 @@ int main() {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
             camera.pos.rotation.pitch += rotationSpeed; // Look down
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I)) {
+            pos2.z += 0.3;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K)) {
+            pos2.z -= 0.3;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::L)) {
+            pos2.x += 0.3;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J)) {
+            pos2.x -= 0.3;
         }
 
         // Rendering

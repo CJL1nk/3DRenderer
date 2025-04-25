@@ -186,8 +186,8 @@ void Object::draw(const Camera& camera) {
                 // Draw connection line
                 if (finalCamZ1 + camera.NEAR_PLANE > 0 && finalCamZ2 + camera.NEAR_PLANE > 0) {
                     sf::Vertex line[] = {
-                        sf::Vertex(sf::Vector2f(xProj1, yProj1), sf::Color::Blue),
-                        sf::Vertex(sf::Vector2f(xProj2, yProj2), sf::Color::Blue)
+                        sf::Vertex(sf::Vector2f(xProj1, yProj1), _color),
+                        sf::Vertex(sf::Vector2f(xProj2, yProj2), _color)
                     };
                     _window->draw(line, 2, sf::PrimitiveType::Lines);
                 }
@@ -206,6 +206,10 @@ void Object::move(const Position pos) {
     _pos->y = pos.y;
     _pos->z = pos.z;
     _pos->rotation = pos.rotation;
+}
+
+void Object::setColor(const sf::Color& color) {
+    _color = color;
 }
 
 Object& Object::operator=(const Object& other) = default;
