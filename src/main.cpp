@@ -34,7 +34,7 @@ int main() {
     // Create window
     sf::Vector2u windowSize = sf::Vector2u(980, 720);
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(60);
 
     std::vector<Point> planePoints;
     for (int x = -100; x <= 100; x += 10) {
@@ -52,16 +52,16 @@ int main() {
     }
 
     Position planePos = Position(0, 0, 0, Rotation(0, 0, 0));
-    Object plane = Object(planePoints, &planePos, window);
+    Object plane = Object(planePoints, planePos, window);
     plane.setColor(sf::Color::Green);
 
     Position pos = Position(0, 0, 0, Rotation(0, 0, 0));
     Position pos2 = Position(5, -5, 5, Rotation(0, 0, 0));
 
     // Create object with above defined points
-    Object cube1 = Object(points, &pos, window);
+    Object cube1 = Object(points, pos, window);
     cube1.setColor(sf::Color::Red);
-    Object cube2 = Object(points, &pos2, window);
+    Object cube2 = Object(points, pos2, window);
     cube2.setColor(sf::Color::Blue);
 
     Camera camera(Position(0, 0, 5));
@@ -69,35 +69,32 @@ int main() {
 
     while (window.isOpen()) {
 
-        pos.rotation.yaw += 4.;
-        pos.rotation.pitch += 2.;
+        cube1.move({pathX * movXMod, 0, pathZ * movZMod,
+            {0, 4., 2.}});
 
-        pos.x += pathX * movXMod;
-        pos.z += pathZ * movZMod;
+        cube2.move({0, 0, 0,
+            {0.7, 0, -0.3}});
 
-        pos2.rotation.yaw += -0.3;
-        pos2.rotation.pitch += 0.7;
-
-        if (pos.x > 100) {
+        if (cube1.getX() > 100) {
             movXMod *= -1;
-            pos.x = 100;
+            cube1.setX(100);
             pathX = distrib(gen);
             sound.play();
-        } else if (pos.x < -100) {
+        } else if (cube1.getX() < -100) {
             movXMod *= -1;
-            pos.x = -100;
+            cube1.setX(-100);
             pathX = distrib(gen);
             sound.play();
         }
 
-        if (pos.z > 100) {
+        if (cube1.getZ() > 100) {
             movZMod *= -1;
-            pos.z = 100;
+            cube1.setZ(100);
             pathZ = distrib(gen);
             sound.play();
-        } else if (pos.z < -100) {
+        } else if (cube1.getZ() < -100) {
             movZMod *= -1;
-            pos.z = -100;
+            cube1.setZ(-100);
             pathZ = distrib(gen);
             sound.play();
         }
@@ -150,21 +147,21 @@ int main() {
             camera.pos.rotation.pitch += rotationSpeed; // Look down
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I)) {
-            pos2.z += 0.3;
+            cube2.move({0, 0, 0.3, {}});
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K)) {
-            pos2.z -= 0.3;
+            cube2.move({0, 0, -0.3, {}});
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::L)) {
-            pos2.x += 0.3;
+            cube2.move({0.3, 0, 0, {}});
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J)) {
-            pos2.x -= 0.3;
+            cube2.move({-0.3, 0, 0, {}});
         }
 
         // Rendering
         window.clear(sf::Color::Black);
-        plane.draw(camera);
+        plane.draw(camera, false);
         cube1.draw(camera);
         cube2.draw(camera);
         window.display();

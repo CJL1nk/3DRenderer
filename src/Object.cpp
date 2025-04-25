@@ -9,7 +9,7 @@
  * @param pos Object center position
  * @param window Window to render in
  */
-Object::Object(const std::vector<Point> &points, Position* pos, sf::RenderWindow& window) {
+Object::Object(const std::vector<Point> &points, Position pos, sf::RenderWindow& window) {
 
     this->_pos = pos;
     this->_points = points;
@@ -21,11 +21,11 @@ Object::Object(const std::vector<Point> &points, Position* pos, sf::RenderWindow
  * None of this math is mine thank you random websites and chatGPT for helping me debug the weird stretching
  * AI ended up fixing this entire thing for me cuz objects weren't rotating and things were stretching weirdly
  */
-void Object::draw(const Camera& camera) {
+void Object::draw(const Camera& camera, bool showPoints) {
     // Pre-calculate object rotation values in radians
-    float yawRad = degreesToRadians(_pos->rotation.yaw);
-    float pitchRad = degreesToRadians(_pos->rotation.pitch);
-    float rollRad = degreesToRadians(_pos->rotation.roll);
+    float yawRad = degreesToRadians(_pos.rotation.yaw);
+    float pitchRad = degreesToRadians(_pos.rotation.pitch);
+    float rollRad = degreesToRadians(_pos.rotation.roll);
 
     for (const Point& point : _points) {
         // Get local position
@@ -49,9 +49,9 @@ void Object::draw(const Camera& camera) {
 
 
         Vector3 worldPos = localPos;
-        worldPos.x += _pos->x;
-        worldPos.y += _pos->y;
-        worldPos.z += _pos->z;
+        worldPos.x += _pos.x;
+        worldPos.y += _pos.y;
+        worldPos.z += _pos.z;
 
         // Calculate camera-relative position
         float camX = worldPos.x - camera.pos.x;
@@ -80,10 +80,12 @@ void Object::draw(const Camera& camera) {
             float yProjected = (camera.FOV * finalCamY) / (finalCamZ + camera.NEAR_PLANE) + _window->getSize().y / 2;
 
             // Draw point
-            sf::CircleShape shape(3);
-            shape.setPosition({xProjected - 3, yProjected - 3});
-            shape.setFillColor(sf::Color::White);
-            _window->draw(shape);
+            if (showPoints) {
+                sf::CircleShape shape(3);
+                shape.setPosition({xProjected - 3, yProjected - 3});
+                shape.setFillColor(sf::Color::White);
+                _window->draw(shape);
+            }
         }
     }
 
@@ -114,9 +116,9 @@ void Object::draw(const Camera& camera) {
                 localPos1.y = finalY1;
 
                 Vector3 worldPos1 = localPos1;
-                worldPos1.x += _pos->x;
-                worldPos1.y += _pos->y;
-                worldPos1.z += _pos->z;
+                worldPos1.x += _pos.x;
+                worldPos1.y += _pos.y;
+                worldPos1.z += _pos.z;
 
                 float camX1 = worldPos1.x - camera.pos.x;
                 float camY1 = worldPos1.y - camera.pos.y;
@@ -158,9 +160,9 @@ void Object::draw(const Camera& camera) {
                 localPos2.y = finalY2;
 
                 Vector3 worldPos2 = localPos2;
-                worldPos2.x += _pos->x;
-                worldPos2.y += _pos->y;
-                worldPos2.z += _pos->z;
+                worldPos2.x += _pos.x;
+                worldPos2.y += _pos.y;
+                worldPos2.z += _pos.z;
 
                 float camX2 = worldPos2.x - camera.pos.x;
                 float camY2 = worldPos2.y - camera.pos.y;
@@ -196,24 +198,82 @@ void Object::draw(const Camera& camera) {
     }
 }
 
+/**
+ * Adds gives position values to object
+ * @param pos Values to add
+ */
+void Object::move(const Position pos) {
+    _pos.x += pos.x;
+    _pos.y += pos.y;
+    _pos.z += pos.z;
+    _pos.rotation.pitch += pos.rotation.pitch;
+    _pos.rotation.yaw += pos.rotation.yaw;
+    _pos.rotation.roll += pos.rotation.roll;
+}
+
+Position Object::getPos() const{
+    return this->_pos;
+}
+
+float Object::getX() const {
+    return this->_pos.x;
+}
+
+float Object::getY() const {
+    return this->_pos.y;
+}
+
+float Object::getZ() const {
+    return this->_pos.z;
+}
+
+Rotation Object::getRotation() const {
+    return this->_pos.rotation;
+}
 
 /**
  * Moves an object to a given position
  * @param pos Position to move object to
  */
-void Object::move(const Position pos) {
-    _pos->x = pos.x;
-    _pos->y = pos.y;
-    _pos->z = pos.z;
-    _pos->rotation = pos.rotation;
+void Object::setPos(const Position pos) {
+    _pos.x = pos.x;
+    _pos.y = pos.y;
+    _pos.z = pos.z;
+    _pos.rotation = pos.rotation;
 }
 
+void Object::setX(float x) {
+    _pos.x = x;
+}
+
+void Object::setY(float y) {
+    _pos.y = y;
+}
+
+void Object::setZ(float z) {
+    _pos.z = z;
+}
+
+/**
+ * Sets the edge colors of an object
+ * @param color Color to set
+ */
 void Object::setColor(const sf::Color& color) {
     _color = color;
 }
 
+/**
+ * Allows for copy of object
+ * @param other Object to copy from
+ * @return Object copy
+ */
 Object& Object::operator=(const Object& other) = default;
 
+/**
+ * Converts degrees to radians, for calculating object projection and position
+ * @param degrees Degrees to convert
+ * @return Given degrees in radians
+ */
 float degreesToRadians(float degrees) {
     return degrees * M_PI / 180.0f;
 }
