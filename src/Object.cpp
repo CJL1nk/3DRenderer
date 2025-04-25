@@ -19,6 +19,7 @@ Object::Object(const std::vector<Point> &points, Position* pos, sf::RenderWindow
 /**
  * Draws object on screen
  * None of this math is mine thank you random websites and chatGPT for helping me debug the weird stretching
+ * AI ended up fixing this entire thing for me cuz objects weren't rotating and things were stretching weirdly
  */
 void Object::draw(const Camera& camera) {
     // Pre-calculate object rotation values in radians
