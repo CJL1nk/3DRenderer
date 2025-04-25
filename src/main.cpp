@@ -31,11 +31,10 @@ int main() {
     float pathX = distrib(gen);
     float pathZ = distrib(gen);
 
-
     // Create window
     sf::Vector2u windowSize = sf::Vector2u(1920, 1080);
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(30);
 
     std::vector<Point> planePoints;
     for (int x = -100; x <= 100; x += 10) {
@@ -166,7 +165,7 @@ int main() {
         // Rendering
         window.clear(sf::Color::Black);
         plane.draw(camera);
-        cube1.draw(camera); // Pass the camera to adjust relative transformations
+        cube1.draw(camera);
         cube2.draw(camera);
         window.display();
     }

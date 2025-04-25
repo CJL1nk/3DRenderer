@@ -116,7 +116,7 @@ void Point::addConnection(const std::vector<std::string>& points) {
 
 /**
  * Adds connections to a set of pre-existing points. Will cause errors if points do not already exist
- * @param point Point label to connect
+ * @param points Point label to connect
  */
 void Point::addConnection(const std::vector<Point>& points) {
 
