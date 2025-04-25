@@ -16,10 +16,14 @@
 class Point {
 public:
 
-    Point() : _label("DEFAULT CONSTRUCTED"), _pos(Vector3(0, 0, 0)) {}
+    Point() : _pos(Vector3(0, 0, 0)) {} // Please don't use this
 
     explicit Point(const std::string &label, const Vector3 pos)
     : _label(label), _pos(pos) {
+
+        if (label.empty()) {
+            throw std::runtime_error("Point label cannot be empty");
+        }
 
         if (!_allPoints.contains(label)) { // Add to all points
             _allPoints.insert(make_pair(this->_label, *this));
@@ -28,8 +32,30 @@ public:
         }
     }
 
-    /* explicit Point(const std::string &label, const Vector3 pos, const std::vector<Point>& connections)
+    explicit Point(const std::string &label, const Vector3 pos, const std::vector<Point>& connections)
     : _label(label), _pos(pos) {
+
+        if (label.empty()) {
+            throw std::runtime_error("Point label cannot be empty");
+        }
+
+        if (!_allPoints.contains(label)) { // Add to all points
+            _allPoints.insert(make_pair(this->_label, *this));
+        } else {
+            throw std::runtime_error("Point already exists");
+        }
+
+        for (auto& connection : connections) { // Add all connections
+            addConnection(connection.label());
+        }
+    }
+
+    explicit Point(const std::string &label, const Vector3 pos, const std::vector<std::string>& connections)
+    : _label(label), _pos(pos) {
+
+        if (label.empty()) {
+            throw std::runtime_error("Point label cannot be empty");
+        }
 
         if (!_allPoints.contains(label)) { // Add to all points
             _allPoints.insert(make_pair(this->_label, *this));
@@ -42,25 +68,31 @@ public:
         }
     }
 
-    explicit Point(const std::string &label, const Vector3 pos, const std::vector<std::string>& connections)
-    : _label(label), _pos(pos) {
+    void addConnection(const std::string& point) {
 
-        if (!_allPoints.contains(label)) { // Add to all points
-            _allPoints.insert(make_pair(this->_label, *this));
+        if (!_connections.contains(point)) {
+            _connections.insert(make_pair(point, point));
         } else {
-            throw std::runtime_error("Point already exists");
+            throw std::runtime_error("Point already connected");
         }
+    }
 
-        for (auto& connection : connections) { // Add all connections
-            addConnection(_allPoints.find(connection)->second);
+    void addConnection(const std::vector<std::string>& points) {
+
+        for (auto& point : points) {
+            if (!_connections.contains(point)) {
+                _connections.insert(make_pair(point, point));
+            } else {
+                throw std::runtime_error("Point already connected");
+            }
         }
-    } */
+    }
 
-    void addConnection(std::vector<Point> points) {
+    void addConnection(const std::vector<Point>& points) {
 
         for (auto& point : points) {
             if (!_connections.contains(point.label())) {
-                _connections.insert(make_pair(point.label(), point));
+                _connections.insert(make_pair(point.label(), point.label()));
             } else {
                 throw std::runtime_error("Point already connected");
             }
@@ -71,7 +103,7 @@ public:
         return _label;
     }
 
-    std::unordered_map<std::string, Point> connections() const {
+    std::unordered_map<std::string, std::string> connections() const {
         return _connections;
     }
 
@@ -80,7 +112,7 @@ public:
     }
 
 private:
-    std::unordered_map<std::string, Point> _connections;
+    std::unordered_map<std::string, std::string> _connections;
     std::string _label;
     Vector3 _pos;
 
