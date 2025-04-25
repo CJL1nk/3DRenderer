@@ -55,13 +55,10 @@ int main() {
     Object plane = Object(planePoints, planePos, window);
     plane.setColor(sf::Color::Green);
 
-    Position pos = Position(0, 0, 0, Rotation(0, 0, 0));
-    Position pos2 = Position(5, -5, 5, Rotation(0, 0, 0));
-
     // Create object with above defined points
-    Object cube1 = Object(points, pos, window);
+    Object cube1 = Object(points, Position(0, 0, 0, Rotation(0, 0, 0)), window);
     cube1.setColor(sf::Color::Red);
-    Object cube2 = Object(points, pos2, window);
+    Object cube2 = Object(points, Position(0, -5, 0, Rotation(0, 0, 0)), window);
     cube2.setColor(sf::Color::Blue);
 
     Camera camera(Position(0, 0, 5));
