@@ -9,6 +9,9 @@
 #include "types.h"
 #include "Point.h"
 
+/**
+ * Class defining a 3D object
+ */
 class Object {
 public:
 
@@ -21,7 +24,7 @@ public:
 
 
 private:
-    Position _pos;
+    Position _pos{};
     std::vector<Point> _points;
     sf::RenderWindow* _window;
 };
