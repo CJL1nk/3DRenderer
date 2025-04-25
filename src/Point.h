@@ -26,6 +26,8 @@ public:
     void addConnection(const std::vector<std::string>& points);
     void addConnection(const std::vector<Point>& points);
 
+    void setPos(const Vector3& pos);
+
     std::string label() const;
     std::unordered_map<std::string, std::string> connections() const;
     Vector3 pos() const;

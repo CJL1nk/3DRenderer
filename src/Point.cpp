@@ -129,6 +129,10 @@ void Point::addConnection(const std::vector<Point>& points) {
     }
 }
 
+void Point::setPos(const Vector3& pos) {
+    this->_pos = pos;
+}
+
 /**
  * Returns point label
  * @return Label of referenced point

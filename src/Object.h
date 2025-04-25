@@ -9,22 +9,25 @@
 #include "types.h"
 #include "Point.h"
 
+float degreesToRadians(float degrees);
+
 /**
  * Class defining a 3D object
  */
 class Object {
 public:
 
-    Object(const std::vector<Point> &points, Vector3 pos, sf::RenderWindow& window);
+    Object(const std::vector<Point> &points, Vector3* pos, sf::RenderWindow& window);
+    Object(const std::vector<Point> &points, Position* pos, sf::RenderWindow& window);
 
-    void draw();
-    void move(Vector3 pos);
+    void draw(const Camera& camera);
+    void move(const Position pos);
 
     Object& operator=(const Object& other);
 
 
 private:
-    Position _pos{};
+    Position* _pos{};
     std::vector<Point> _points;
     sf::RenderWindow* _window;
 };

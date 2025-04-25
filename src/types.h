@@ -30,5 +30,15 @@ struct Vector2 {
     float y;
 };
 
+struct Camera {
+    Position pos;
+    float FOV;
+    float NEAR_PLANE = 3.0f;
+
+    Camera(Position pos = Position(0, 0, 0, Rotation(0, 0, 0)), float fov = 300.f, float near_plane = 3.0f)
+        : pos(pos), FOV(fov), NEAR_PLANE(near_plane) {}
+};
+
+
 
 #endif //TYPES_H
