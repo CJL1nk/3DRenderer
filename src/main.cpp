@@ -22,6 +22,9 @@ int main() {
     int movXMod = 1;
     int movZMod = 1;
 
+    sf::SoundBuffer buffer("./Audio/boing.ogg");
+    sf::Sound sound(buffer);
+
     std::mt19937 gen(6);
     std::uniform_real_distribution<> distrib(0.8, 10.);
 
@@ -30,7 +33,7 @@ int main() {
 
 
     // Create window
-    sf::Vector2u windowSize = sf::Vector2u(1280, 720);
+    sf::Vector2u windowSize = sf::Vector2u(1920, 1080);
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
     window.setFramerateLimit(60);
 
@@ -80,20 +83,24 @@ int main() {
             movXMod *= -1;
             pos.x = 100;
             pathX = distrib(gen);
+            sound.play();
         } else if (pos.x < -100) {
             movXMod *= -1;
             pos.x = -100;
             pathX = distrib(gen);
+            sound.play();
         }
 
         if (pos.z > 100) {
             movZMod *= -1;
             pos.z = 100;
             pathZ = distrib(gen);
+            sound.play();
         } else if (pos.z < -100) {
             movZMod *= -1;
             pos.z = -100;
             pathZ = distrib(gen);
+            sound.play();
         }
 
 

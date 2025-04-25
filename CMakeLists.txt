@@ -21,4 +21,4 @@ add_executable(3DRenderer src/main.cpp
         src/Point.h
 )
 
-target_link_libraries(3DRenderer PRIVATE SFML::Graphics SFML::Window)
+target_link_libraries(3DRenderer PRIVATE SFML::Graphics SFML::Window SFML::Audio)
