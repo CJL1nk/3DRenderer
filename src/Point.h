@@ -28,7 +28,7 @@ public:
         }
     }
 
-    explicit Point(const std::string &label, const Vector3 pos, std::vector<Point> connections)
+    /* explicit Point(const std::string &label, const Vector3 pos, const std::vector<Point>& connections)
     : _label(label), _pos(pos) {
 
         if (!_allPoints.contains(label)) { // Add to all points
@@ -42,7 +42,7 @@ public:
         }
     }
 
-    explicit Point(const std::string &label, const Vector3 pos, std::vector<std::string> connections)
+    explicit Point(const std::string &label, const Vector3 pos, const std::vector<std::string>& connections)
     : _label(label), _pos(pos) {
 
         if (!_allPoints.contains(label)) { // Add to all points
@@ -52,16 +52,18 @@ public:
         }
 
         for (auto& connection : connections) { // Add all connections
-            addConnection(_allPoints[connection]);
+            addConnection(_allPoints.find(connection)->second);
         }
-    }
+    } */
 
-    void addConnection(const Point& point) {
+    void addConnection(std::vector<Point> points) {
 
-        if (!_connections.contains(point.label())) {
-            _connections.insert(make_pair(point.label(), point));
-        } else {
-            throw std::runtime_error("Point already connected");
+        for (auto& point : points) {
+            if (!_connections.contains(point.label())) {
+                _connections.insert(make_pair(point.label(), point));
+            } else {
+                throw std::runtime_error("Point already connected");
+            }
         }
     }
 

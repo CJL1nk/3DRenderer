@@ -4,7 +4,7 @@
 
 #include "Object.h"
 
-Object::Object(std::vector<Point> points, Vector3 pos, sf::RenderWindow& window) {
+Object::Object(const std::vector<Point> &points, const Vector3 pos, sf::RenderWindow& window) {
 
     this->_pos = Position(pos.x, pos.y, pos.z);
     this->_points = points;
@@ -13,24 +13,20 @@ Object::Object(std::vector<Point> points, Vector3 pos, sf::RenderWindow& window)
 
 void Object::draw() {
 
-    for (Point point : this->_points) {
-        std::cout << point.label() << " Connections:" << std::endl;
+    for (const Point& point : this->_points) {
+        std::cout << point.label() << " Connections:";
         for (auto& connection : point.connections()) {
-            std::cout << " " << connection.first << std::endl;
+            std::cout << " " << connection.first << " ";
         }
+        std::cout << std::endl;
     }
 }
 
 
-void Object::move(Vector3 pos) {
+void Object::move(const Vector3 pos) {
     _pos.x = pos.x;
     _pos.y = pos.y;
     _pos.z = pos.z;
 }
 
-Object& Object::operator=(const Object& other) {
-    this->_pos = other._pos;
-    this->_points = other._points;
-    this->_window = other._window;
-    return *this;
-}
+Object& Object::operator=(const Object& other) = default;

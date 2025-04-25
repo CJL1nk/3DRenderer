@@ -12,7 +12,7 @@
 class Object {
 public:
 
-    Object(std::vector<Point> points, Vector3 pos, sf::RenderWindow& window);
+    Object(const std::vector<Point> &points, Vector3 pos, sf::RenderWindow& window);
 
     void draw();
     void move(Vector3 pos);
