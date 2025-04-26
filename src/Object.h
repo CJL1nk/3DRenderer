@@ -49,7 +49,7 @@ public:
     Object& operator=(const Object& other);
 
 private:
-    Position _pos{};
+    Position _pos;
     std::vector<Point> _points;
     sf::Color _color;
     Hitbox _hitbox;
