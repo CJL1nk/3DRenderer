@@ -45,6 +45,8 @@ int main() {
     int movXMod = 1;
     int movZMod = 1;
 
+    float pyramidRotSpeed = 1.f;
+
     sf::SoundBuffer buffer("./Audio/boing.ogg");
     sf::Sound sound(buffer);
 
@@ -67,7 +69,7 @@ int main() {
         cube2.move({0, 0, 0,
             {0.7, 0, -0.3}});
 
-        tetrahedron.move({0, 0, 0, {0, 0, 1}});
+        tetrahedron.move({0, 0, 0, {0, 0, pyramidRotSpeed}});
 
         if (cube1.getX() > 100) {
             movXMod *= -1;
@@ -157,6 +159,12 @@ int main() {
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J)) {
             cube2.move({-0.3, 0, 0, {}});
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Equal)) {
+            pyramidRotSpeed += .1f;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Hyphen)) {
+            pyramidRotSpeed -= .1f;
         }
 
         // Rendering
