@@ -12,6 +12,14 @@
 
 void initPlane();
 
+inline std::vector<Point> tetrahedronPoints = {
+    Point("A", sf::Vector3f(-10.0f, -3.0f, -5.78f), std::vector<std::string>{"B", "C", "D"}),
+    Point("B", sf::Vector3f( 10.0f, -3.0f, -5.78f), std::vector<std::string>{"C", "D"}),
+    Point("C", sf::Vector3f( 0.0f, -3.0f,  11.55f), std::vector<std::string>{"D"}),
+    Point("D", sf::Vector3f( 0.0f,  -18.0f,  0.0f))
+};
+
+
 inline std::vector<Point> cubePoints = {
     Point("1", sf::Vector3f(-1.5f, -1.5f, -1.5f), std::vector<std::string>{"2", "4", "5"}),
     Point("2", sf::Vector3f( 1.5f, -1.5f, -1.5f), std::vector<std::string>{"3", "6"}),
@@ -40,10 +48,11 @@ inline std::vector<Point> planePoints = []() {
     return points;
 }();
 
-
+inline Hitbox tetrahedronBox = Hitbox(4.0f, 4.0f, 4.0f);
 inline Hitbox cube1Box = Hitbox(3.f, 3.f, 3.f);
 inline Hitbox cube2Box = Hitbox(3.f, 3.f, 3.f);
 
+inline Object tetrahedron = Object(tetrahedronPoints, Position(0, -20, 0, Rotation(0, 0, 0)), tetrahedronBox, sf::Color::Yellow);
 inline Object cube1 = Object(cubePoints, Position(0, 0, 0, Rotation(0, 0, 0)), cube1Box, sf::Color::Red);
 inline Object cube2 = Object(cubePoints, Position(0, 0, 0, Rotation(0, 0, 0)), cube2Box, sf::Color::Blue);
 inline Object plane = Object(planePoints, Position(0, 0, 0, Rotation(0, 0, 0)), Hitbox(), sf::Color::Green, false);

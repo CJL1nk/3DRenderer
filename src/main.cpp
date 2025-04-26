@@ -67,6 +67,8 @@ int main() {
         cube2.move({0, 0, 0,
             {0.7, 0, -0.3}});
 
+        tetrahedron.move({0, 0, 0, {0, 0, 1}});
+
         if (cube1.getX() > 100) {
             movXMod *= -1;
             cube1.setX(100);
