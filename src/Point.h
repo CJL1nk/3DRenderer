@@ -6,7 +6,6 @@
 #define POINT_H
 
 #include "includes.h"
-#include "types.h"
 
 /**
  * Class defining a point object. Each point knows its own position and which
