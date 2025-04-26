@@ -14,8 +14,6 @@ std::unordered_map<std::string, Point> Point::_allPoints;
 Point::Point(const std::string &label, const Vector3 pos)
     : _label(label), _pos(pos) {
 
-    _allPoints.reserve(1); // Force reserved space to avoid division by 0
-
     if (label.empty()) {
         throw std::runtime_error("Point label cannot be empty");
     }
@@ -35,8 +33,6 @@ Point::Point(const std::string &label, const Vector3 pos)
  */
 Point::Point(const std::string &label, const Vector3 pos, const std::vector<Point>& connections)
 : _label(label), _pos(pos) {
-
-    _allPoints.reserve(1); // Force reserved space to avoid division by 0
 
     if (label.empty()) {
         throw std::runtime_error("Point label cannot be empty");
@@ -61,8 +57,6 @@ Point::Point(const std::string &label, const Vector3 pos, const std::vector<Poin
  */
 Point::Point(const std::string &label, const Vector3 pos, const std::vector<std::string>& connections)
 : _label(label), _pos(pos) {
-
-    _allPoints.reserve(1); // Force reserved space to avoid division by 0
 
     if (label.empty()) {
         throw std::runtime_error("Point label cannot be empty");
