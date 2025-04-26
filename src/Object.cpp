@@ -4,6 +4,8 @@
 
 #include "Object.h"
 
+std::vector<Object*> Object::_allObjects;
+
 /**
  * @param points Object vertices
  * @param pos Object center position
@@ -16,6 +18,8 @@ Object::Object(const std::vector<Point> &points, const Position &pos, const Hitb
     this->_points = points;
     this->_hitbox = hitbox;
     this->_color = color;
+
+    _allObjects.push_back(this);
 }
 
 /**

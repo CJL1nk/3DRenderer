@@ -4,6 +4,36 @@
 #include "objects.h"
 
 /**
+ * Calculates distance between 2 objects, used for camera here
+ * @param p1 First position
+ * @param p2 Second position
+ * @return Distance between the two objects
+ */
+float calculateDistance(const Position& p1, const Position& p2) {
+    return std::sqrt(
+        std::pow(p2.x - p1.x, 2) +
+        std::pow(p2.y - p1.y, 2) +
+        std::pow(p2.z - p1.z, 2)
+    );
+}
+
+/**
+ * Sorts objects based on distance to camera and renders them, ensures correct draw order BUT is not very optimized
+ * @param window Window to render in
+ */
+void drawObjects(sf::RenderWindow& window) {
+    std::sort(Object::_allObjects.begin(), Object::_allObjects.end(), [](const Object* a, const Object* b) {
+        const float distA = calculateDistance(camera.pos, a->getPos());
+        const float distB = calculateDistance(camera.pos, b->getPos());
+        return distA > distB;  // Sort farthest first
+    });
+
+    for (const auto& obj : Object::_allObjects) {
+        obj->draw(window);
+    }
+}
+
+/**
  * Main logic of the program
  * @return 0 if successful
  */
@@ -19,7 +49,7 @@ int main() {
     sf::Sound sound(buffer);
 
     std::mt19937 gen(time(nullptr));
-    std::uniform_real_distribution<> distrib(0.2, .5);
+    std::uniform_real_distribution<> distrib(0.8f, 10.f);
 
     float pathX = distrib(gen);
     float pathZ = distrib(gen);
@@ -129,9 +159,7 @@ int main() {
 
         // Rendering
         window.clear(sf::Color::Black);
-        plane.draw(window , false);
-        cube1.draw(window);
-        cube2.draw(window);
+        drawObjects(window);
         window.display();
     }
 }

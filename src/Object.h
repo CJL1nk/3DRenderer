@@ -18,6 +18,8 @@ float degreesToRadians(float degrees);
 class Object {
 public:
 
+    static std::vector<Object*> _allObjects;
+
     Object(const std::vector<Point> &points, const Position &pos, const Hitbox& hitbox = Hitbox(), const sf::Color& color = sf::Color::White);
 
     void draw(sf::RenderWindow& window, bool showPoints = true);
