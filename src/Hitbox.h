@@ -39,6 +39,4 @@ private:
     std::vector<Point> _points;
 };
 
-
-
 #endif //HITBOX_H
