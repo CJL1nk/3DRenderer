@@ -21,6 +21,7 @@ add_executable(3DRenderer src/main.cpp
         src/Point.h
         src/Hitbox.cpp
         src/Hitbox.h
+        src/objects.h
 )
 
 target_link_libraries(3DRenderer PRIVATE SFML::Graphics SFML::Window SFML::Audio)
