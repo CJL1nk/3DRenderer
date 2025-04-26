@@ -218,7 +218,7 @@ void Object::move(const Position pos) {
  * @param other Object to test collision with
  * @return true if they collide, false otherwise
  */
-bool Object::collidesWith(const Object &other) {
+bool Object::collidesWith(const Object &other) const {
 
     if (abs(this->getX() - other.getX()) <= (this->getHitbox().getX() / 2.f) + (other.getHitbox().getX() / 2.f) &&
            (abs(this->getY() - other.getY()) <= (this->getHitbox().getY() / 2.f) + (other.getHitbox().getY() / 2.f)) &&

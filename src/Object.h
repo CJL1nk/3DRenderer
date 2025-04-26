@@ -23,7 +23,7 @@ public:
     void draw(sf::RenderWindow& window, bool showPoints = true);
     void move(Position pos);
 
-    bool collidesWith(const Object& other);
+    bool collidesWith(const Object& other) const;
 
     [[nodiscard]] Position getPos() const;
     [[nodiscard]] float getX() const;
