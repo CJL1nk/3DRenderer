@@ -11,22 +11,22 @@ std::vector<Point> points = {
     Point("5", Vector3(-1.5f, -1.5f,  1.5f), std::vector<std::string>{"6", "8"}),
     Point("6", Vector3( 1.5f, -1.5f,  1.5f), std::vector<std::string>{"7"}),
     Point("7", Vector3( 1.5f,  1.5f,  1.5f), std::vector<std::string>{"8"}),
-    Point("8", Vector3(-1.5f,  1.5f,  1.5f)),
+    Point("8", Vector3(-1.5f,  1.5f,  1.5f))
 };
 
 int main() {
 
     // Movement speed
     float movementSpeed = 0.8f;
-    float rotationSpeed = 0.12f;
+    float rotationSpeed = 0.06f;
     int movXMod = 1;
     int movZMod = 1;
 
     sf::SoundBuffer buffer("./Audio/boing.ogg");
     sf::Sound sound(buffer);
 
-    std::mt19937 gen(6);
-    std::uniform_real_distribution<> distrib(0.8, 10.);
+    std::mt19937 gen(time(nullptr));
+    std::uniform_real_distribution<> distrib(0.2, .5);
 
     float pathX = distrib(gen);
     float pathZ = distrib(gen);
@@ -55,10 +55,14 @@ int main() {
     Object plane = Object(planePoints, planePos, window);
     plane.setColor(sf::Color::Green);
 
+    Hitbox cube1Box = Hitbox(HitboxType::CUBE);
+    Hitbox cube2Box = Hitbox(HitboxType::CUBE);
+    cube1Box.init(3.f);
+    cube2Box.init(3.f);
     // Create object with above defined points
-    Object cube1 = Object(points, Position(0, 0, 0, Rotation(0, 0, 0)), window);
+    Object cube1 = Object(points, Position(0, 0, 0, Rotation(0, 0, 0)), window, cube1Box);
     cube1.setColor(sf::Color::Red);
-    Object cube2 = Object(points, Position(0, -5, 0, Rotation(0, 0, 0)), window);
+    Object cube2 = Object(points, Position(0, 0, 0, Rotation(0, 0, 0)), window, cube2Box);
     cube2.setColor(sf::Color::Blue);
 
     Camera camera(Position(0, 0, 5));
@@ -96,6 +100,12 @@ int main() {
             sound.play();
         }
 
+        if (cube1.collidesWith(cube2)) {
+            movXMod *= -1;
+            movZMod *= -1;
+            pathZ = distrib(gen);
+            sound.play();
+        }
 
         // Event processing
         while (const std::optional event = window.pollEvent())

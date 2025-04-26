@@ -9,11 +9,12 @@
  * @param pos Object center position
  * @param window Window to render in
  */
-Object::Object(const std::vector<Point> &points, Position pos, sf::RenderWindow& window) {
+Object::Object(const std::vector<Point> &points, const Position &pos, sf::RenderWindow& window, const Hitbox& hitbox) {
 
     this->_pos = pos;
     this->_points = points;
     this->_window = &window;
+    this->_hitbox = hitbox;
 }
 
 /**
@@ -211,6 +212,19 @@ void Object::move(const Position pos) {
     _pos.rotation.roll += pos.rotation.roll;
 }
 
+bool Object::collidesWith(const Object &other) {
+
+    // Only calculates for cubes rn
+    if (abs(this->getX() - other.getX()) <= (this->getHitbox().getRadius() / 2.f) + (other.getHitbox().getRadius() / 2.f) &&
+           (abs(this->getY() - other.getY()) <= (this->getHitbox().getRadius() / 2.f) + (other.getHitbox().getRadius() / 2.f)) &&
+           abs(this->getZ() - other.getZ()) <= (this->getHitbox().getRadius() / 2.f) + (other.getHitbox().getRadius() / 2.f)) {
+        return true;
+    }
+
+    return false;
+}
+
+
 Position Object::getPos() const{
     return this->_pos;
 }
@@ -229,6 +243,10 @@ float Object::getZ() const {
 
 Rotation Object::getRotation() const {
     return this->_pos.rotation;
+}
+
+Hitbox Object::getHitbox() const {
+    return this->_hitbox;
 }
 
 /**

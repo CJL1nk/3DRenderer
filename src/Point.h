@@ -17,9 +17,9 @@ public:
 
     Point() : _pos(Vector3(0, 0, 0)) {} // Please don't use this
 
-    explicit Point(const std::string &label, const Vector3 pos);
-    explicit Point(const std::string &label, const Vector3 pos, const std::vector<Point>& connections);
-    explicit Point(const std::string &label, const Vector3 pos, const std::vector<std::string>& connections);
+    explicit Point(const std::string &label, Vector3 pos);
+    explicit Point(const std::string &label, Vector3 pos, const std::vector<Point>& connections);
+    explicit Point(const std::string &label, Vector3 pos, const std::vector<std::string>& connections);
 
     void addConnection(const std::string& point);
     void addConnection(const Point& point);
