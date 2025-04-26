@@ -1,5 +1,4 @@
 #include "includes.h"
-#include "Point.h"
 #include "types.h"
 #include "Object.h"
 #include "objects.h"
