@@ -7,14 +7,15 @@
 /**
  * @param points Object vertices
  * @param pos Object center position
- * @param window Window to render in
+ * @param hitbox Object hitbox
+ * @param color Object color
  */
-Object::Object(const std::vector<Point> &points, const Position &pos, sf::RenderWindow& window, const Hitbox& hitbox) {
+Object::Object(const std::vector<Point> &points, const Position &pos, const Hitbox& hitbox, const sf::Color& color) {
 
     this->_pos = pos;
     this->_points = points;
-    this->_window = &window;
     this->_hitbox = hitbox;
+    this->_color = color;
 }
 
 /**
@@ -22,7 +23,7 @@ Object::Object(const std::vector<Point> &points, const Position &pos, sf::Render
  * None of this math is mine thank you random websites and chatGPT for helping me debug the weird stretching
  * AI ended up fixing this entire thing for me cuz objects weren't rotating and things were stretching weirdly
  */
-void Object::draw(const Camera& camera, bool showPoints) {
+void Object::draw(sf::RenderWindow& window, bool showPoints) {
     // Pre-calculate object rotation values in radians
     float yawRad = degreesToRadians(_pos.rotation.yaw);
     float pitchRad = degreesToRadians(_pos.rotation.pitch);
@@ -30,7 +31,7 @@ void Object::draw(const Camera& camera, bool showPoints) {
 
     for (const Point& point : _points) {
         // Get local position
-        Vector3 localPos = point.pos();
+        sf::Vector3f localPos = point.pos();
 
         // Apply object rotation
         float rotatedX = localPos.x * cos(yawRad) - localPos.z * sin(yawRad);
@@ -49,7 +50,7 @@ void Object::draw(const Camera& camera, bool showPoints) {
         localPos.y = finalY;
 
 
-        Vector3 worldPos = localPos;
+        sf::Vector3f worldPos = localPos;
         worldPos.x += _pos.x;
         worldPos.y += _pos.y;
         worldPos.z += _pos.z;
@@ -77,15 +78,15 @@ void Object::draw(const Camera& camera, bool showPoints) {
 
         // Project the point to the screen
         if (finalCamZ + camera.NEAR_PLANE > 0) { // Avoid clipping
-            float xProjected = (camera.FOV * finalCamX) / (finalCamZ + camera.NEAR_PLANE) + _window->getSize().x / 2;
-            float yProjected = (camera.FOV * finalCamY) / (finalCamZ + camera.NEAR_PLANE) + _window->getSize().y / 2;
+            float xProjected = (camera.FOV * finalCamX) / (finalCamZ + camera.NEAR_PLANE) + window.getSize().x / 2;
+            float yProjected = (camera.FOV * finalCamY) / (finalCamZ + camera.NEAR_PLANE) + window.getSize().y / 2;
 
             // Draw point
             if (showPoints) {
                 sf::CircleShape shape(3);
                 shape.setPosition({xProjected - 3, yProjected - 3});
                 shape.setFillColor(sf::Color::White);
-                _window->draw(shape);
+                window.draw(shape);
             }
         }
     }
@@ -98,7 +99,7 @@ void Object::draw(const Camera& camera, bool showPoints) {
             });
 
             if (it != _points.end()) {
-                Vector3 localPos1 = point.pos();
+                sf::Vector3f localPos1 = point.pos();
 
                 // Apply object rotation
                 float rotatedX1 = localPos1.x * cos(yawRad) - localPos1.z * sin(yawRad);
@@ -116,7 +117,7 @@ void Object::draw(const Camera& camera, bool showPoints) {
                 localPos1.x = finalX1;
                 localPos1.y = finalY1;
 
-                Vector3 worldPos1 = localPos1;
+                sf::Vector3f worldPos1 = localPos1;
                 worldPos1.x += _pos.x;
                 worldPos1.y += _pos.y;
                 worldPos1.z += _pos.z;
@@ -138,11 +139,11 @@ void Object::draw(const Camera& camera, bool showPoints) {
                 float finalCamY1 = camX1 * sin(-camera.pos.rotation.roll) + camY1 * cos(-camera.pos.rotation.roll);
                 float finalCamZ1 = camZ1;
 
-                float xProj1 = (camera.FOV * finalCamX1) / (finalCamZ1 + camera.NEAR_PLANE) + _window->getSize().x / 2;
-                float yProj1 = (camera.FOV * finalCamY1) / (finalCamZ1 + camera.NEAR_PLANE) + _window->getSize().y / 2;
+                float xProj1 = (camera.FOV * finalCamX1) / (finalCamZ1 + camera.NEAR_PLANE) + window.getSize().x / 2;
+                float yProj1 = (camera.FOV * finalCamY1) / (finalCamZ1 + camera.NEAR_PLANE) + window.getSize().y / 2;
 
 
-                Vector3 localPos2 = it->pos();
+                sf::Vector3f localPos2 = it->pos();
 
                 // Apply object rotation
                 float rotatedX2 = localPos2.x * cos(yawRad) - localPos2.z * sin(yawRad);
@@ -160,7 +161,7 @@ void Object::draw(const Camera& camera, bool showPoints) {
                 localPos2.x = finalX2;
                 localPos2.y = finalY2;
 
-                Vector3 worldPos2 = localPos2;
+                sf::Vector3f worldPos2 = localPos2;
                 worldPos2.x += _pos.x;
                 worldPos2.y += _pos.y;
                 worldPos2.z += _pos.z;
@@ -182,8 +183,8 @@ void Object::draw(const Camera& camera, bool showPoints) {
                 float finalCamY2 = camX2 * sin(-camera.pos.rotation.roll) + camY2 * cos(-camera.pos.rotation.roll);
                 float finalCamZ2 = camZ2;
 
-                float xProj2 = (camera.FOV * finalCamX2) / (finalCamZ2 + camera.NEAR_PLANE) + _window->getSize().x / 2;
-                float yProj2 = (camera.FOV * finalCamY2) / (finalCamZ2 + camera.NEAR_PLANE) + _window->getSize().y / 2;
+                float xProj2 = (camera.FOV * finalCamX2) / (finalCamZ2 + camera.NEAR_PLANE) + window.getSize().x / 2;
+                float yProj2 = (camera.FOV * finalCamY2) / (finalCamZ2 + camera.NEAR_PLANE) + window.getSize().y / 2;
 
 
                 // Draw connection line
@@ -192,7 +193,7 @@ void Object::draw(const Camera& camera, bool showPoints) {
                         sf::Vertex(sf::Vector2f(xProj1, yProj1), _color),
                         sf::Vertex(sf::Vector2f(xProj2, yProj2), _color)
                     };
-                    _window->draw(line, 2, sf::PrimitiveType::Lines);
+                    window.draw(line, 2, sf::PrimitiveType::Lines);
                 }
             }
         }
@@ -204,47 +205,74 @@ void Object::draw(const Camera& camera, bool showPoints) {
  * @param pos Values to add
  */
 void Object::move(const Position pos) {
-    _pos.x += pos.x;
-    _pos.y += pos.y;
-    _pos.z += pos.z;
-    _pos.rotation.pitch += pos.rotation.pitch;
-    _pos.rotation.yaw += pos.rotation.yaw;
-    _pos.rotation.roll += pos.rotation.roll;
+    this->_pos.x += pos.x;
+    this->_pos.y += pos.y;
+    this->_pos.z += pos.z;
+    this->_pos.rotation.pitch += pos.rotation.pitch;
+    this->_pos.rotation.yaw += pos.rotation.yaw;
+    this->_pos.rotation.roll += pos.rotation.roll;
 }
 
+/**
+ * Checks if 2 objects hitboxes collide with each other
+ * @param other Object to test collision with
+ * @return true if they collide, false otherwise
+ */
 bool Object::collidesWith(const Object &other) {
 
-    // Only calculates for cubes rn
-    if (abs(this->getX() - other.getX()) <= (this->getHitbox().getRadius() / 2.f) + (other.getHitbox().getRadius() / 2.f) &&
-           (abs(this->getY() - other.getY()) <= (this->getHitbox().getRadius() / 2.f) + (other.getHitbox().getRadius() / 2.f)) &&
-           abs(this->getZ() - other.getZ()) <= (this->getHitbox().getRadius() / 2.f) + (other.getHitbox().getRadius() / 2.f)) {
+    if (abs(this->getX() - other.getX()) <= (this->getHitbox().getX() / 2.f) + (other.getHitbox().getX() / 2.f) &&
+           (abs(this->getY() - other.getY()) <= (this->getHitbox().getY() / 2.f) + (other.getHitbox().getY() / 2.f)) &&
+           abs(this->getZ() - other.getZ()) <= (this->getHitbox().getZ() / 2.f) + (other.getHitbox().getZ() / 2.f)) {
         return true;
     }
 
     return false;
 }
 
-
+/**
+ * Returns object's position
+ * @return Object's position object
+ */
 Position Object::getPos() const{
     return this->_pos;
 }
 
+/**
+ * Returns object's X position
+ * @return Object's X position
+ */
 float Object::getX() const {
     return this->_pos.x;
 }
 
+/**
+ * Returns object's Y position
+ * @return Object's Y position
+ */
 float Object::getY() const {
     return this->_pos.y;
 }
 
+/**
+ * Returns object's Z position
+ * @return Object's Z position
+ */
 float Object::getZ() const {
     return this->_pos.z;
 }
 
+/**
+ * Returns object's Rotation
+ * @return Object's Rotation object
+ */
 Rotation Object::getRotation() const {
     return this->_pos.rotation;
 }
 
+/**
+ * Returns object's hitbox
+ * @return Object's Hitbox object
+ */
 Hitbox Object::getHitbox() const {
     return this->_hitbox;
 }
@@ -254,22 +282,34 @@ Hitbox Object::getHitbox() const {
  * @param pos Position to move object to
  */
 void Object::setPos(const Position pos) {
-    _pos.x = pos.x;
-    _pos.y = pos.y;
-    _pos.z = pos.z;
-    _pos.rotation = pos.rotation;
+    this->_pos.x = pos.x;
+    this->_pos.y = pos.y;
+    this->_pos.z = pos.z;
+    this->_pos.rotation = pos.rotation;
 }
 
+/**
+ * Sets an objects X position
+ * @param x X position to set
+ */
 void Object::setX(float x) {
-    _pos.x = x;
+    this->_pos.x = x;
 }
 
+/**
+ * Sets an objects Y position
+ * @param y Y position to set
+ */
 void Object::setY(float y) {
-    _pos.y = y;
+    this->_pos.y = y;
 }
 
+/**
+ * Sets an objects Z position
+ * @param z Z position to set
+ */
 void Object::setZ(float z) {
-    _pos.z = z;
+    this->_pos.z = z;
 }
 
 /**
@@ -292,6 +332,6 @@ Object& Object::operator=(const Object& other) = default;
  * @param degrees Degrees to convert
  * @return Given degrees in radians
  */
-float degreesToRadians(float degrees) {
+float degreesToRadians(const float degrees) {
     return degrees * M_PI / 180.0f;
 }

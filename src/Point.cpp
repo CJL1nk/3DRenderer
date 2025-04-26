@@ -11,7 +11,7 @@ std::unordered_map<std::string, Point> Point::_allPoints;
  * @param label Point label
  * @param pos Point position relative to object center
  */
-Point::Point(const std::string &label, const Vector3 pos)
+Point::Point(const std::string &label, const sf::Vector3f pos)
     : _label(label), _pos(pos) {
 
     if (label.empty()) {
@@ -31,7 +31,7 @@ Point::Point(const std::string &label, const Vector3 pos)
  * @param pos Point position relative to object center
  * @param connections Vector containing points constructed point should be connected to
  */
-Point::Point(const std::string &label, const Vector3 pos, const std::vector<Point>& connections)
+Point::Point(const std::string &label, const sf::Vector3f pos, const std::vector<Point>& connections)
 : _label(label), _pos(pos) {
 
     if (label.empty()) {
@@ -55,7 +55,7 @@ Point::Point(const std::string &label, const Vector3 pos, const std::vector<Poin
  * @param pos Point position relative to object center
  * @param connections Vector containing point labels constructed point should be connected to
  */
-Point::Point(const std::string &label, const Vector3 pos, const std::vector<std::string>& connections)
+Point::Point(const std::string &label, const sf::Vector3f pos, const std::vector<std::string>& connections)
 : _label(label), _pos(pos) {
 
     if (label.empty()) {
@@ -129,7 +129,7 @@ void Point::addConnection(const std::vector<Point>& points) {
     }
 }
 
-void Point::setPos(const Vector3& pos) {
+void Point::setPos(const sf::Vector3f& pos) {
     this->_pos = pos;
 }
 
@@ -153,6 +153,6 @@ std::unordered_map<std::string, std::string> Point::connections() const {
  * Returns position of referenced point
  * @return Vector containing point X, Y, and Z
  */
-Vector3 Point::pos() const {
+sf::Vector3f Point::pos() const {
     return _pos;
 }

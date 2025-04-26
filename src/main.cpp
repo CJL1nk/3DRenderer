@@ -2,18 +2,12 @@
 #include "Point.h"
 #include "types.h"
 #include "Object.h"
+#include "objects.h"
 
-std::vector<Point> points = {
-    Point("1", Vector3(-1.5f, -1.5f, -1.5f), std::vector<std::string>{"2", "4", "5"}),
-    Point("2", Vector3( 1.5f, -1.5f, -1.5f), std::vector<std::string>{"3", "6"}),
-    Point("3", Vector3( 1.5f,  1.5f, -1.5f), std::vector<std::string>{"4", "7"}),
-    Point("4", Vector3(-1.5f,  1.5f, -1.5f), std::vector<std::string>{"1", "8"}),
-    Point("5", Vector3(-1.5f, -1.5f,  1.5f), std::vector<std::string>{"6", "8"}),
-    Point("6", Vector3( 1.5f, -1.5f,  1.5f), std::vector<std::string>{"7"}),
-    Point("7", Vector3( 1.5f,  1.5f,  1.5f), std::vector<std::string>{"8"}),
-    Point("8", Vector3(-1.5f,  1.5f,  1.5f))
-};
-
+/**
+ * Main logic of the program
+ * @return 0 if successful
+ */
 int main() {
 
     // Movement speed
@@ -35,38 +29,6 @@ int main() {
     sf::Vector2u windowSize = sf::Vector2u(1920, 1080);
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
     window.setFramerateLimit(60);
-
-    std::vector<Point> planePoints;
-    for (int x = -100; x <= 100; x += 10) {
-        for (int z = -100; z <= 100; z += 10) {
-            std::string label = "point_" + std::to_string(x) + "_" + std::to_string(z);
-            std::vector<std::string> connections;
-
-            // Connect point to its neighboring points
-            if (x + 10 <= 100) connections.push_back("point_" + std::to_string(x + 10) + "_" + std::to_string(z)); // Right
-            if (z + 10 <= 100) connections.push_back("point_" + std::to_string(x) + "_" + std::to_string(z + 10)); // Down
-
-            // Create the point
-            planePoints.emplace_back(Point(label, Vector3(x, 0, z), connections));
-        }
-    }
-
-    Position planePos = Position(0, 0, 0, Rotation(0, 0, 0));
-    Object plane = Object(planePoints, planePos, window);
-    plane.setColor(sf::Color::Green);
-
-    Hitbox cube1Box = Hitbox(HitboxType::CUBE);
-    Hitbox cube2Box = Hitbox(HitboxType::CUBE);
-    cube1Box.init(3.f);
-    cube2Box.init(3.f);
-    // Create object with above defined points
-    Object cube1 = Object(points, Position(0, 0, 0, Rotation(0, 0, 0)), window, cube1Box);
-    cube1.setColor(sf::Color::Red);
-    Object cube2 = Object(points, Position(0, 0, 0, Rotation(0, 0, 0)), window, cube2Box);
-    cube2.setColor(sf::Color::Blue);
-
-    Camera camera(Position(0, 0, 5));
-
 
     while (window.isOpen()) {
 
@@ -168,9 +130,9 @@ int main() {
 
         // Rendering
         window.clear(sf::Color::Black);
-        plane.draw(camera, false);
-        cube1.draw(camera);
-        cube2.draw(camera);
+        plane.draw(window , false);
+        cube1.draw(window);
+        cube2.draw(window);
         window.display();
     }
 }

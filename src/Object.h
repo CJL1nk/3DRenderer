@@ -18,9 +18,9 @@ float degreesToRadians(float degrees);
 class Object {
 public:
 
-    Object(const std::vector<Point> &points, const Position &pos, sf::RenderWindow& window, const Hitbox& hitbox = Hitbox());
+    Object(const std::vector<Point> &points, const Position &pos, const Hitbox& hitbox = Hitbox(), const sf::Color& color = sf::Color::White);
 
-    void draw(const Camera& camera, bool showPoints = true);
+    void draw(sf::RenderWindow& window, bool showPoints = true);
     void move(Position pos);
 
     bool collidesWith(const Object& other);
@@ -49,7 +49,6 @@ public:
 private:
     Position _pos{};
     std::vector<Point> _points;
-    sf::RenderWindow* _window;
     sf::Color _color;
     Hitbox _hitbox;
 };

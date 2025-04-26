@@ -15,27 +15,27 @@
 class Point {
 public:
 
-    Point() : _pos(Vector3(0, 0, 0)) {} // Please don't use this
+    Point() : _pos(sf::Vector3f(0, 0, 0)) {} // Please don't use this
 
-    explicit Point(const std::string &label, Vector3 pos);
-    explicit Point(const std::string &label, Vector3 pos, const std::vector<Point>& connections);
-    explicit Point(const std::string &label, Vector3 pos, const std::vector<std::string>& connections);
+    explicit Point(const std::string &label, sf::Vector3f pos);
+    explicit Point(const std::string &label, sf::Vector3f pos, const std::vector<Point>& connections);
+    explicit Point(const std::string &label, sf::Vector3f pos, const std::vector<std::string>& connections);
 
     void addConnection(const std::string& point);
     void addConnection(const Point& point);
     void addConnection(const std::vector<std::string>& points);
     void addConnection(const std::vector<Point>& points);
 
-    void setPos(const Vector3& pos);
+    void setPos(const sf::Vector3f& pos);
 
     std::string label() const;
     std::unordered_map<std::string, std::string> connections() const;
-    Vector3 pos() const;
+    sf::Vector3f pos() const;
 
 private:
     std::unordered_map<std::string, std::string> _connections;
     std::string _label;
-    Vector3 _pos;
+    sf::Vector3f _pos;
 
     static std::unordered_map<std::string, Point> _allPoints;
 };

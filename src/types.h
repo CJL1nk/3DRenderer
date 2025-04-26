@@ -19,26 +19,15 @@ struct Position {
     Rotation rotation;
 };
 
-struct Vector3 {
-    float x;
-    float y;
-    float z;
-};
-
-struct Vector2 {
-    float x;
-    float y;
-};
-
 struct Camera {
     Position pos;
     float FOV;
     float NEAR_PLANE;
 
-    Camera(Position pos = Position(0, 0, 0, Rotation(0, 0, 0)), float fov = 600.f, float near_plane = 3.0f)
+    explicit Camera(const Position &pos = Position(0, 0, 0, Rotation(0, 0, 0)), const float fov = 600.f, const float near_plane = 3.0f)
         : pos(pos), FOV(fov), NEAR_PLANE(near_plane) {}
 };
 
-
+inline Camera camera = Camera(); // This is defined here because I want to
 
 #endif //TYPES_H
