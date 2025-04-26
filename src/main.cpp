@@ -49,7 +49,7 @@ int main() {
     sf::Sound sound(buffer);
 
     std::mt19937 gen(time(nullptr));
-    std::uniform_real_distribution<> distrib(0.8f, 10.f);
+    std::uniform_real_distribution<> distrib(0.2f, 0.8f);
 
     float pathX = distrib(gen);
     float pathZ = distrib(gen);

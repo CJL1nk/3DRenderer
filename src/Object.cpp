@@ -11,13 +11,15 @@ std::vector<Object*> Object::_allObjects;
  * @param pos Object center position
  * @param hitbox Object hitbox
  * @param color Object color
+ * @param showPoints Whether object should render its points or not
  */
-Object::Object(const std::vector<Point> &points, const Position &pos, const Hitbox& hitbox, const sf::Color& color) {
+Object::Object(const std::vector<Point> &points, const Position &pos, const Hitbox& hitbox, const sf::Color& color, const bool& showPoints) {
 
     this->_pos = pos;
     this->_points = points;
     this->_hitbox = hitbox;
     this->_color = color;
+    this->_showPoints = showPoints;
 
     _allObjects.push_back(this);
 }
@@ -27,7 +29,7 @@ Object::Object(const std::vector<Point> &points, const Position &pos, const Hitb
  * None of this math is mine thank you random websites and chatGPT for helping me debug the weird stretching
  * AI ended up fixing this entire thing for me cuz objects weren't rotating and things were stretching weirdly
  */
-void Object::draw(sf::RenderWindow& window, bool showPoints) {
+void Object::draw(sf::RenderWindow& window) {
     // Pre-calculate object rotation values in radians
     float yawRad = degreesToRadians(_pos.rotation.yaw);
     float pitchRad = degreesToRadians(_pos.rotation.pitch);
@@ -86,7 +88,7 @@ void Object::draw(sf::RenderWindow& window, bool showPoints) {
             float yProjected = (camera.FOV * finalCamY) / (finalCamZ + camera.NEAR_PLANE) + window.getSize().y / 2;
 
             // Draw point
-            if (showPoints) {
+            if (this->_showPoints) {
                 sf::CircleShape shape(3);
                 shape.setPosition({xProjected - 3, yProjected - 3});
                 shape.setFillColor(sf::Color::White);

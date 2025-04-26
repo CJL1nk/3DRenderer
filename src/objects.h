@@ -46,6 +46,6 @@ inline Hitbox cube2Box = Hitbox(3.f, 3.f, 3.f);
 
 inline Object cube1 = Object(cubePoints, Position(0, 0, 0, Rotation(0, 0, 0)), cube1Box, sf::Color::Red);
 inline Object cube2 = Object(cubePoints, Position(0, 0, 0, Rotation(0, 0, 0)), cube2Box, sf::Color::Blue);
-inline Object plane = Object(planePoints, Position(0, 0, 0, Rotation(0, 0, 0)), Hitbox(), sf::Color::Green);
+inline Object plane = Object(planePoints, Position(0, 0, 0, Rotation(0, 0, 0)), Hitbox(), sf::Color::Green, false);
 
 #endif //OBJECTS_H
