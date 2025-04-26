@@ -55,6 +55,4 @@ private:
     Hitbox _hitbox;
 };
 
-
-
 #endif //OBJECT_H
