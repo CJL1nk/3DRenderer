@@ -57,7 +57,7 @@ int main() {
     float pathZ = distrib(gen);
 
     // Create window
-    sf::Vector2u windowSize = sf::Vector2u(1920, 1080);
+    sf::Vector2u windowSize = sf::Vector2u(1280, 720);
     sf::RenderWindow window(sf::VideoMode(windowSize), "Window");
     window.setFramerateLimit(60);
 
